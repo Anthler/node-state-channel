@@ -51,11 +51,15 @@ app.post("/users/transactions/sign/:id", async (req, res) => {
     //Get the nonce to be used for the transaction
     nonce = nonces += 1;
 
+    //Get milliseconds because now solidity returns current block timestamp in milliseconds
+    const timestamp = new Date().getMilliseconds();
+
     //Hash the transaction message to be signed
-    const hash = await web3.utils.soliditySha3(
+    const hash = web3.utils.soliditySha3(
       recipient,
       amount,
       nonce,
+      timestamp,
       CONTRACT_ADDR
     );
 
@@ -66,19 +70,20 @@ app.post("/users/transactions/sign/:id", async (req, res) => {
     balance -= amount;
 
     //Send the signed signature to the signer to be sent to the recipient
-    res.status(200).send(hash, signature, nonce);
+    res.status(200).send(hash, signature, nonce, amount, timestamp);
   } catch (error) {
     console.log(error);
   }
 });
 
-app.use("/transactions/sender/verify", async (req, res) => {
-  const { signature, expected_sender, nonce, amount } = req.body;
+app.use("/users/transactions/sender/verify", async (req, res) => {
+  const { signature, expected_sender, nonce, amount, timestamp } = req.body;
 
-  const hash = await web3.utils.soliditySha3(
+  const hash = web3.utils.soliditySha3(
     recipient,
     amount,
     nonce,
+    timestamp,
     CONTRACT_ADDR
   );
   const signer = await web3.eth.personal.ecRecover(hash, signature);
@@ -90,7 +95,14 @@ app.use("/transactions/sender/verify", async (req, res) => {
   res.status(200).send({ valid: true });
 });
 
+app.post("/users/transactions/challenge", (req, res) => {
+  //get contract instance
+  //send expected paramters from request body to smart contract challenge function
+  //return true if challenge accepted
+});
+
 const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
   console.log(`App Listening on PORT: ${PORT}`);
 });
