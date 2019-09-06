@@ -13,14 +13,14 @@ const users = [
     id: 1,
     balance: 300,
     address: "0x890575Aee83E2b50869B3917A77a5578b86b0e98",
-    password: "Anthler01",
+    password: "123456",
     nonces: 0
   },
   {
     id: 2,
     balance: 200,
     address: "0xB36023D6626841e825b99eF410F2fB84a9B9c970",
-    password: "Anthler01",
+    password: "123456",
     nonces: 0
   }
 ];
@@ -61,14 +61,16 @@ app.post("/users/transactions/sign/:id", async (req, res) => {
       CONTRACT_ADDR
     );
 
+    // To prevent errors like unknown account, we create a new account the is sync with our geth node running
     const address = await web3.eth.personal.newAccount(password);
     console.log(address);
+
     // Sign the transaction
     const signature = await web3.eth.personal.sign(hash, address, password);
     //const signature = "helloworld";
 
     //The current/ updated balance after transaction is signed
-    balance -= amount;
+    balance = balance -= amount;
 
     //Send the signed signature to the signer to be sent to the recipient
     res.status(200).send({
@@ -85,6 +87,7 @@ app.post("/users/transactions/sign/:id", async (req, res) => {
 });
 
 app.use("/users/transactions/sender/verify", async (req, res) => {
+  // Destructure required parameters from body of request
   const {
     signature,
     recipient,
@@ -94,6 +97,7 @@ app.use("/users/transactions/sender/verify", async (req, res) => {
     timestamp
   } = req.body;
 
+  // Rehash the message
   const hash = web3.utils.soliditySha3(
     recipient,
     amount,
@@ -101,12 +105,13 @@ app.use("/users/transactions/sender/verify", async (req, res) => {
     timestamp,
     CONTRACT_ADDR
   );
+
+  // Recover signer account of the signature
   const signer = await web3.eth.personal.ecRecover(hash, signature);
 
+  // Check if signer is the expected signer
   if (signer !== expected_sender.toLowerCase()) {
-    return res
-      .status(404)
-      .send({ message: "Signature is invalid", hash: hash, signer: signer });
+    return res.status(404).send({ message: "Signature is invalid" });
   }
 
   res.status(200).send({ valid: true });
