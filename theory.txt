@@ -1,0 +1,27 @@
+========== THEORETICAL QUESTIONS AND ANSWERS ==============
+
+1. Below are some of the ideas I find from the problems:
+
+# This Facilitates instant transfer of ether/ERC20 tokens which are still verifiable 
+by smart contract on-chain. Since transactions are carried out off-chain, there is no need
+to wait for transactions to be mined and confirmed, therefore, transactions are instant.
+
+# Since both users can update their balances off-chain,  off-chain transactions
+does not need to be mined, so users only pay for the final transaction submitted on-chain.
+This is economically cheaper as compared to on-chain transactions where each transaction needs to be mined 
+and therefore requires miner fee for each transfer to be successful
+
+2.  How another party (another user) can validate that timestamp was really actual/current?
+
+# If a bad party sends the wrong transaction receipt for their personal benefit, the timestamp 
+can be used together with the nonce to challenge the transaction by providing a 
+signed transaction which contains timestamp that is greater than previously submitted reciept.
+
+
+3. How we can make sure the margin error of that validation is smallest possible?
+
+# We can reduce validation errors by requiring paramters such as timestamp(in epoch time seconds), nonce, contract address. 
+The Contract address and nonce helps prevents replay attacks. 
+Also using the timestamp we can get the recent transaction by comparing if the bad party's reciept
+timestamp is less than the timestamp provided by honest party for challenging transaction, 
+by this way we can overwrite old reciept with a current one as long as signature is valid and verifiable by the smart contract.

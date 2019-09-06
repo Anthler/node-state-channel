@@ -1,16 +1,13 @@
 const express = require("express");
 const Web3 = require("web3");
 
-const web3 = new Web3(
-  new Web3.providers.HttpProvider(
-    "https://rinkeby.infura.io/5a705e38d7704b26a676c46394ab8920"
-  )
-);
+const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
 
 const app = express();
 app.use(express.json());
 
-const CONTRACT_ADDR = "0x890575Aee83E2b50869B3917A77a5578b86b0e98";
+const CONTRACT_ADDR = "0xec8346021bfaeb25d7184b9682781a5cccfcdb03";
+
 const users = [
   {
     id: 1,
@@ -52,7 +49,8 @@ app.post("/users/transactions/sign/:id", async (req, res) => {
     nonce = nonces += 1;
 
     //Get milliseconds because now solidity returns current block timestamp in milliseconds
-    const timestamp = new Date().getMilliseconds();
+    const timestamp = Date.now();
+    //console.log(timestamp);
 
     //Hash the transaction message to be signed
     const hash = web3.utils.soliditySha3(
@@ -63,14 +61,23 @@ app.post("/users/transactions/sign/:id", async (req, res) => {
       CONTRACT_ADDR
     );
 
+    //await web3.eth.personal.unlockAccount(address, password, 1);
+
     // Sign the transaction
     const signature = await web3.eth.personal.sign(hash, address, password);
+    //const signature = "helloworld";
 
     //The current/ updated balance after transaction is signed
     balance -= amount;
 
     //Send the signed signature to the signer to be sent to the recipient
-    res.status(200).send(hash, signature, nonce, amount, timestamp);
+    res.status(200).send({
+      hash: hash,
+      signature: signature,
+      nonce: nonce,
+      amount: amount,
+      timestamp: timestamp
+    });
   } catch (error) {
     console.log(error);
   }
