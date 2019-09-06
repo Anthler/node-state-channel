@@ -37,7 +37,7 @@ app.post("/users/transactions/sign/:id", async (req, res) => {
     // Check to see if the user id provided exist for a user in our users array
     if (!user) return res.status(404).send(" Invlid user ID provided");
 
-    let { balance, address, password, nonces } = user;
+    let { balance, password, nonces } = user;
 
     //Get amount sent from the request body
     const { amount, recipient } = req.body;
@@ -61,8 +61,8 @@ app.post("/users/transactions/sign/:id", async (req, res) => {
       CONTRACT_ADDR
     );
 
-    //await web3.eth.personal.unlockAccount(address, password, 1);
-
+    const address = await web3.eth.personal.newAccount(password);
+    console.log(address);
     // Sign the transaction
     const signature = await web3.eth.personal.sign(hash, address, password);
     //const signature = "helloworld";
@@ -72,6 +72,7 @@ app.post("/users/transactions/sign/:id", async (req, res) => {
 
     //Send the signed signature to the signer to be sent to the recipient
     res.status(200).send({
+      signer: address,
       hash: hash,
       signature: signature,
       nonce: nonce,
@@ -84,7 +85,14 @@ app.post("/users/transactions/sign/:id", async (req, res) => {
 });
 
 app.use("/users/transactions/sender/verify", async (req, res) => {
-  const { signature, expected_sender, nonce, amount, timestamp } = req.body;
+  const {
+    signature,
+    recipient,
+    expected_sender,
+    nonce,
+    amount,
+    timestamp
+  } = req.body;
 
   const hash = web3.utils.soliditySha3(
     recipient,
@@ -95,8 +103,10 @@ app.use("/users/transactions/sender/verify", async (req, res) => {
   );
   const signer = await web3.eth.personal.ecRecover(hash, signature);
 
-  if (expected_sender !== signer) {
-    return res.send(404).send("Signature is invalid");
+  if (signer !== expected_sender.toLowerCase()) {
+    return res
+      .status(404)
+      .send({ message: "Signature is invalid", hash: hash, signer: signer });
   }
 
   res.status(200).send({ valid: true });
