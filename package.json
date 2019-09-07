@@ -30,6 +30,7 @@
     "elliptic": "^6.5.1",
     "es-abstract": "^1.14.1",
     "es-to-primitive": "^1.2.0",
+    "ethereumjs-abi": "^0.6.8",
     "ethereumjs-util": "^6.1.0",
     "ethjs-unit": "^0.1.6",
     "evp_bytestokey": "^1.0.3",

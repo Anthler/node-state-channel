@@ -1,12 +1,13 @@
 const express = require("express");
 const Web3 = require("web3");
+const abi = require("ethereumjs-abi");
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
 
 const app = express();
 app.use(express.json());
 
-const CONTRACT_ADDR = "0xec8346021bfaeb25d7184b9682781a5cccfcdb03";
+const CONTRACT_ADDR = "0xA0Df493ED0EBdA61da690A9e068F9B39C035758F";
 
 const users = [
   {
@@ -24,7 +25,7 @@ const users = [
     nonces: 0
   }
 ];
-
+0x10ecf4afc5142e83d16b45df1a896e49023b61edd01fda6f06b61e999b74a299;
 app.post("/users/transactions/sign/:id", async (req, res) => {
   //extract the user's ID from request parameters
 
@@ -61,8 +62,19 @@ app.post("/users/transactions/sign/:id", async (req, res) => {
       CONTRACT_ADDR
     );
 
+    // const prefixed =
+    //   "0x" +
+    //   abi
+    //     .soliditySHA3(
+    //       ["string", "bytes32"],
+    //       ["\x19Ethereum Signed Message:\n32", hash]
+    //     )
+    //     .toString("hex");
+
     // To prevent errors like unknown account, we create a new account the is sync with our geth node running
     const address = await web3.eth.personal.newAccount(password);
+
+    //address = web3.utils.toChecksumAddress(address);
     console.log(address);
 
     // Sign the transaction
@@ -105,6 +117,11 @@ app.use("/users/transactions/sender/verify", async (req, res) => {
     timestamp,
     CONTRACT_ADDR
   );
+
+  // const prefixed = "0x" + abi.soliditySHA3(
+  //   ["string", "bytes32"],
+  //   ["\x19Ethereum Signed Message:\n32", hash]
+  // );
 
   // Recover signer account of the signature
   const signer = await web3.eth.personal.ecRecover(hash, signature);

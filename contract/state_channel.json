@@ -1,91 +1,154 @@
 [
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "new_amount",
-        "type": "uint256"
-      },
-      {
-        "name": "_nonce",
-        "type": "uint256"
-      },
-      {
-        "name": "last_timestamp",
-        "type": "uint256"
-      },
-      {
-        "name": "_signature",
-        "type": "bytes"
-      }
-    ],
-    "name": "challengeTransaction",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "name": "timestamp",
-        "type": "uint256"
-      },
-      {
-        "name": "nonce",
-        "type": "uint256"
-      },
-      {
-        "name": "signature",
-        "type": "bytes"
-      }
-    ],
-    "name": "claimPayment",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_nonce",
-        "type": "uint256"
-      },
-      {
-        "name": "_amount",
-        "type": "uint256"
-      },
-      {
-        "name": "_timestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "paymentRequest",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  }
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_amount",
+				"type": "uint256"
+			},
+			{
+				"name": "_nonce",
+				"type": "uint256"
+			},
+			{
+				"name": "_timestamp",
+				"type": "uint256"
+			},
+			{
+				"name": "_sender",
+				"type": "address"
+			},
+			{
+				"name": "_recipient",
+				"type": "address"
+			},
+			{
+				"name": "_signature",
+				"type": "bytes"
+			}
+		],
+		"name": "isValidSignature",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_nonce",
+				"type": "uint256"
+			},
+			{
+				"name": "_amount",
+				"type": "uint256"
+			},
+			{
+				"name": "_sender",
+				"type": "address"
+			},
+			{
+				"name": "_recipient",
+				"type": "address"
+			},
+			{
+				"name": "_timestamp",
+				"type": "uint256"
+			},
+			{
+				"name": "_signature",
+				"type": "bytes"
+			}
+		],
+		"name": "paymentRequest",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_recipient",
+				"type": "address"
+			},
+			{
+				"name": "_sender",
+				"type": "address"
+			},
+			{
+				"name": "new_amount",
+				"type": "uint256"
+			},
+			{
+				"name": "_nonce",
+				"type": "uint256"
+			},
+			{
+				"name": "last_timestamp",
+				"type": "uint256"
+			},
+			{
+				"name": "_signature",
+				"type": "bytes"
+			}
+		],
+		"name": "challengeTransaction",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_sender",
+				"type": "address"
+			},
+			{
+				"name": "_amount",
+				"type": "uint256"
+			},
+			{
+				"name": "_timestamp",
+				"type": "uint256"
+			},
+			{
+				"name": "_nonce",
+				"type": "uint256"
+			},
+			{
+				"name": "_signature",
+				"type": "bytes"
+			}
+		],
+		"name": "claimPayment",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
 ]

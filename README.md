@@ -1,5 +1,12 @@
 ## Availabe commands
 
+##git clone <project repository url>
+Clone project onto local system
+
+## npm install
+
+After cloning this project, run npm install to install all the dependencies of this project
+
 ## npm run start
 
 If you have nodemon installed you simply run the command above if you don't have nodemon installed,
