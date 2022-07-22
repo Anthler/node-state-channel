@@ -36,7 +36,7 @@
     "evp_bytestokey": "^1.0.3",
     "express": "^4.17.1",
     "fd-slicer": "^1.1.0",
-    "file-type": "^5.2.0",
+    "file-type": "^16.5.4",
     "for-each": "^0.3.3",
     "forever-agent": "^0.6.1",
     "form-data": "^2.3.3",
