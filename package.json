@@ -34,7 +34,7 @@
     "ethereumjs-util": "^6.1.0",
     "ethjs-unit": "^0.1.6",
     "evp_bytestokey": "^1.0.3",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "fd-slicer": "^1.1.0",
     "file-type": "^5.2.0",
     "for-each": "^0.3.3",
